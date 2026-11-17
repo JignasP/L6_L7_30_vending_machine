@@ -1,15 +1,48 @@
+"""Lab 7 input handling by Paturu Naga Jignas (PES2UG24AM110)."""
+
+
 def parse_coins(coins_csv):
-    return [int(c) for c in coins_csv.split(',')]
+    """Parse comma-separated integers, or return None for malformed input."""
+    if not isinstance(coins_csv, str):
+        return None
+    try:
+        return [int(c) for c in coins_csv.split(',')]
+    except ValueError:
+        return None
+
 
 def slot_position(code):
-    row = ord(code[0].upper()) - ord('A')
-    column = int(code[1:]) - 1
-    return row, column
+    """Convert an A-Z row and positive column to zero-based coordinates."""
+    if not isinstance(code, str) or len(code) < 2:
+        return None
+    letter = code[0]
+    if not ('A' <= letter <= 'Z' or 'a' <= letter <= 'z'):
+        return None
+    try:
+        column = int(code[1:])
+    except ValueError:
+        return None
+    if column < 1:
+        return None
+    return ord(letter.upper()) - ord('A'), column - 1
+
 
 def change_due(payment):
-    paid, price = payment.split('/')
-    change = int(paid) - int(price)
+    """Return exact change in five-unit coins, or None for invalid payments."""
+    if not isinstance(payment, str):
+        return None
+    try:
+        paid_text, price_text = payment.split('/')
+        paid, price = int(paid_text), int(price_text)
+    except ValueError:
+        return None
+    if paid < 0 or price < 0 or paid < price:
+        return None
+    change = paid - price
+    if change % 5:
+        return None
     return str(change // 5) + ' five-coins'
+
 
 def main():
     print("==== Running parse_coins ====")
