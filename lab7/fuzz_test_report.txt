@@ -1,0 +1,117 @@
+Lab 7 - Vending Machine: Fuzz Testing
+Name: Paturu Naga Jignas
+USN: PES2UG24AM110
+Validation date: 2026-11-17
+
+Environment:
+Python 3.10.8; pytest 9.0.3; Hypothesis 6.112.1; coverage.py 7.6.1
+
+Before fixes:
+The three no-crash properties failed on the starter module.
+Hypothesis minimized all three failing examples to None:
+- parse_coins(None): AttributeError
+- slot_position(None): TypeError
+- change_due(None): AttributeError
+
+Fixes:
+- Non-string inputs and malformed values return None.
+- Slot rows must be A-Z (case insensitive); columns must be positive.
+- Change requires nonnegative amounts, sufficient payment and an exact
+  multiple of five. Negative and truncated change are rejected.
+
+After fixes:
+8 properties x 500 passing generated examples = 4,000 passing examples.
+42 focused cases cover regressions, non-string types and CLI execution.
+50 tests passed in total. Lab 6 separately passed all 41 tests.
+
+Command with dependencies installed:
+python -m coverage run --branch --source=vending_machine -m pytest -q --hypothesis-show-statistics
+python -m coverage report -m --fail-under=100
+
+Recorded pytest and Hypothesis output:
+..................................................                       [100%]
+============================ Hypothesis Statistics ============================
+test_vending_machine.py::test_parse_coins_no_crash:
+
+  - during generate phase (6.95 seconds):
+    - Typical runtimes: ~ 3-13 ms, of which ~ 1-10 ms in data generation
+    - 500 passing examples, 0 failing examples, 0 invalid examples
+
+  - Stopped because settings.max_examples=500
+
+
+test_vending_machine.py::test_slot_position_no_crash:
+
+  - during generate phase (6.52 seconds):
+    - Typical runtimes: ~ 3-11 ms, of which ~ 1-9 ms in data generation
+    - 500 passing examples, 0 failing examples, 0 invalid examples
+
+  - Stopped because settings.max_examples=500
+
+
+test_vending_machine.py::test_change_due_no_crash:
+
+  - during generate phase (6.34 seconds):
+    - Typical runtimes: ~ 3-10 ms, of which ~ 1-8 ms in data generation
+    - 500 passing examples, 0 failing examples, 0 invalid examples
+
+  - Stopped because settings.max_examples=500
+
+
+test_vending_machine.py::test_parse_coins_round_trip:
+
+  - during generate phase (11.06 seconds):
+    - Typical runtimes: ~ 3-22 ms, of which ~ 1-20 ms in data generation
+    - 500 passing examples, 0 failing examples, 139 invalid examples
+
+  - Stopped because settings.max_examples=500
+
+
+test_vending_machine.py::test_slot_position_round_trip:
+
+  - during generate phase (2.79 seconds):
+    - Typical runtimes: ~ 2-4 ms, of which ~ 0-1 ms in data generation
+    - 500 passing examples, 0 failing examples, 0 invalid examples
+
+  - Stopped because settings.max_examples=500
+
+
+test_vending_machine.py::test_exact_change:
+
+  - during generate phase (6.55 seconds):
+    - Typical runtimes: ~ 3-5 ms, of which ~ 1-2 ms in data generation
+    - 500 passing examples, 0 failing examples, 0 invalid examples
+
+  - Stopped because settings.max_examples=500
+
+
+test_vending_machine.py::test_underpayment_is_rejected:
+
+  - during generate phase (4.13 seconds):
+    - Typical runtimes: ~ 3-6 ms, of which ~ 1-3 ms in data generation
+    - 500 passing examples, 0 failing examples, 0 invalid examples
+
+  - Stopped because settings.max_examples=500
+
+
+test_vending_machine.py::test_inexact_change_is_rejected:
+
+  - during generate phase (8.95 seconds):
+    - Typical runtimes: ~ 3-6 ms, of which ~ 1-3 ms in data generation
+    - 500 passing examples, 0 failing examples, 468 invalid examples
+
+  - Stopped because settings.max_examples=500
+
+
+50 passed in 54.22s
+
+Name                 Stmts   Miss Branch BrPart  Cover   Missing
+----------------------------------------------------------------
+vending_machine.py      49      0     18      0   100%
+----------------------------------------------------------------
+TOTAL                   49      0     18      0   100%
+
+Statement coverage: 49/49 (100%)
+Branch coverage: 18/18 (100%)
+Missing statements: none
+Missing branches: none
