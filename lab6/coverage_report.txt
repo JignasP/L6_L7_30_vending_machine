@@ -1,0 +1,25 @@
+Lab 6 - Vending Machine: Code and Branch Coverage
+Name: Paturu Naga Jignas
+USN: PES2UG24AM110
+
+Validation: pytest 9.0.3 and coverage.py 7.6.1 (Python tracer)
+
+Command:
+python -m coverage run --branch --source=vending_machine -m pytest -q
+
+Result:
+41 passed
+
+Command:
+python -m coverage report -m --fail-under=100
+
+Name                 Stmts   Miss Branch BrPart  Cover   Missing
+----------------------------------------------------------------
+vending_machine.py      30      0     18      0   100%
+----------------------------------------------------------------
+TOTAL                   30      0     18      0   100%
+
+Statement coverage: 30/30 (100%)
+Branch coverage: 18/18 (100%)
+Missing statements: none
+Missing branches: none
